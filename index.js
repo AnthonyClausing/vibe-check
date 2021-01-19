@@ -14,7 +14,7 @@ async function getSongTitles(browser) {
     let titles = await ytPage.$$eval('span#video-title', (titles) => titles.map(t => t.innerText + " genius lyrics" ))
     ytPage.close()
     return titles 
-  }catch(e){
+  } catch(e) {
     throw e
   }
 }
@@ -22,38 +22,67 @@ async function getSongTitles(browser) {
 async function getGeniusLinks(browser, songs) {
   try {
     let geniusLinks = await Promise.all(songs.map(async (song) => {
-      try{
+      try {
         const googlePage = await browser.newPage()
         await googlePage.goto(googleUrl)
         await googlePage.type('input[name="q"]', song)
         await Promise.all([ googlePage.waitForNavigation(), googlePage.type('input[name="q"]', String.fromCharCode(13))])
+        //if the first link isn't to any lyrics, drop it
         let link = await googlePage.$eval('div.g>div>div>a', (res) => res.innerText.includes('| Genius Lyrics') ? res.href : null)
         await googlePage.close()
         return link
-      }catch(e){
+      } catch(e) {
         throw {error: e, message:'error in map'}
       }
     }))
-    return geniusLinks
+    //return array of non-null elements
+    return geniusLinks.filter(l => l)
   }catch(e) {
     throw e
   }
 }
 
 async function getAllLyrics(browser,links){
-  let lyrics = ''
+  try {
+    let lyrics = await Promise.all(links.map(async (link) => {
+      try {
+        const geniusPage = await browser.newPage()
+        await geniusPage.goto(link)
+        await geniusPage.waitForSelector('.song_body-lyrics')
+        let words = await geniusPage.$eval('lyrics',(section) => {
+          //matches section info [Verse 3: Singer] i.e anything between '[' and ']' and newlines -X- not working on innerText atm
+          // const lyricRegex = new RegExp('(^\[[;\s\w\"\=\,\:\./\~\{\}\?\!\-\%\&\#\$\^\(\)]*?\])|\n','g') 
+          // (n') at end of word replace with 'ng' or any word cleanup api?
+          let lines = section.innerText.split('\n').filter(str => str && str[0] !== '[').join(' ').split(' ') 
+          return lines
+        })
+        await geniusPage.close()
+        return words
+      } catch(e) {
+        throw e
+      }
+    }))
+    return lyrics.flat()
+  } catch(e) {
+    throw e
+  }
+
 }
 
 function run() {
   return new Promise(async (resolve, reject) => {
       try {
           const browser = await puppeteer.launch()
-          // const geniusPage = await browser.newPage()
+          console.log('Browser Launched')
+          console.log('...getting song titles')
           let songs = await getSongTitles(browser)
+          console.log('...getting genius links')
           let links = await getGeniusLinks(browser, songs)
+          console.log('...getting lyrics')
           let lyrics = await getAllLyrics(browser, links)
           browser.close()
-          return resolve(links)
+          console.log('Browser Closed')
+          return resolve(lyrics)
       } catch (e) {
           return reject(e)
       }
