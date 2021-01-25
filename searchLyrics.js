@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-// const {performance} = require('perf_hooks');
 const GOOGLE_URL = "https://www.google.com"
 const YT_URL= "https://www.youtube.com/playlist?list="
 
@@ -91,28 +90,5 @@ function searchLyrics(playlistLink) {
       }
   })
 }
-//calculates average time by executing searchGoogle 20 times asynchronously
-// const averageTime = async () => {
-//   const averageList = [];
 
-//   for (let i = 0; i < 20; i++) {
-//       const t0 = performance.now();
-
-//       //wait for our function to execute
-//       await searchLyrics();
-
-//       const t1 = performance.now();
-
-//       //push the difference in performance time instance
-//       averageList.push(t1 - t0);
-//   }
-
-//   //adds all the values in averageList and divides by length
-//   const average = averageList.reduce((a, b) => a + b) / averageList.length;
-
-//   console.log('Average Time: ' + average + 'ms');
-// };
-
-//executing the average time function so we can run the file in node runtime.
-// averageTime();
 module.exports =  searchLyrics;
