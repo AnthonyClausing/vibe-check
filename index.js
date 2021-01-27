@@ -1,5 +1,7 @@
 let checkButton = document.getElementById('check')
 let input = document.getElementById('playlist-input')
+let modal = document.getElementById('modal')
+let modalCloseButton = document.querySelector('#modal-close>button')
 //get and sanitize input value
 //Disable after click or disappear with animation
 //some type of loading animation
@@ -15,8 +17,11 @@ checkButton.addEventListener('click', () => {
   if(!isValid(playlistUrl)){
     input.style.border = '4px red solid'
   } else {
-    input.style.border = '4px green solid'
+    modal.style.display = 'block'
   }
   // fetch('http://localhost:8080/search?list=PLfe2uTiC7lz-xG0N50SVCmpJ9-MrW5VpU')
   // .then(res => console.log(res))
+})
+modalCloseButton.addEventListener('click', () => {
+  modal.style.display = 'none' 
 })
