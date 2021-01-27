@@ -8,6 +8,7 @@ html(lang="en")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap")
     style
       include css/index.css
+      include css/modal.css
   body
     .wrapper
       .container
@@ -15,5 +16,6 @@ html(lang="en")
           p.text-primary Enter a youtube playlist url
           input#playlist-input
           button#check.btn.text-primary C H E C K
-        script
-          include ../index.js
+    include modal.pug
+    script
+      include ../index.js
