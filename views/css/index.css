@@ -16,7 +16,8 @@ input, button {
   text-align: center;
 }
 .btn {
-  margin: 0 auto;
+  padding: 0.25rem;
+  margin: 0.5rem auto;
   font-size : 1rem;
   border-radius: 0.5rem;
   background-color: rgba(40,40,40,50%);
@@ -25,15 +26,14 @@ input, button {
   cursor: pointer;
 }
 .text-primary {
-  font-size : 1.25rem;
+  font-size : 1rem;
   color: white;
   text-shadow: 4px -3px #303030;
 }
 #playlist-input {
-  width: 33%;
+  width: 70vw;
   padding: 10px;
   font-size: 1rem;
-  margin: 0.5rem auto;
   border-radius: 0.5rem;
 }
 .wrapper {
@@ -42,12 +42,28 @@ input, button {
   top: 0;
   bottom: 0;
   position: absolute;
-  background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+  background: linear-gradient(120deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
   background-size: 1800% 1800%;
-  -webkit-animation: rainbow 18s ease infinite;
-  -z-animation: rainbow 18s ease infinite;
-  -o-animation: rainbow 18s ease infinite;
-  animation: rainbow 18s ease-in-out infinite;
+  -webkit-animation: rainbow 18s cubic-bezier(0.15, 0.43, 0.97, 0.93) infinite;
+  -z-animation: rainbow 18s cubic-bezier(0.15, 0.43, 0.97, 0.93) infinite;
+  -o-animation: rainbow 18s cubic-bezier(0.15, 0.43, 0.97, 0.93) infinite;
+  animation: rainbow 18s cubic-bezier(0.15, 0.43, 0.97, 0.93) infinite;
+}
+#panel {
+  background: rgba(230,230,230,0.5);
+  width: fit-content;
+  align-self: center;
+}
+@media (min-width: 768px) { 
+  #playlist-input {
+    width: 30vw;
+  }
+  .text-primary{
+    font-size: 1.25rem;
+  }
+  #panel {
+    padding: 2.5rem;
+  }
 }
 /* ANIMATIONS TOO FAST OR TOO CHOPPY*/
 @-webkit-keyframes rainbow {
